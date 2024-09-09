@@ -96,6 +96,10 @@ Para ejecutar este proyecto, necesitarás tener instalados los siguientes progra
     ```bash
     docker-compose exec backend npx prisma migrate dev --name init
     ```
+    ```cmd
+    cd backend
+    npx prisma migrate dev --name init
+    ```
 
 ## Pruebas
 
