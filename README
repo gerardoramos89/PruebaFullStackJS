@@ -1,0 +1,102 @@
+# Full Stack Application: CRUD con Autenticación, JWT y PostgreSQL
+
+Este proyecto es una aplicación Full Stack que incluye un backend en Node.js con autenticación JWT y operaciones CRUD, y un frontend en React. Ambos servicios están dockerizados y configurados para ser levantados con Docker Compose.
+
+## Estructura
+
+my-fullstack-app/
+├── backend/
+│   ├── prisma/
+│   │   └── schema.prisma
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── app.js
+│   │   └── server.js
+│   ├── Dockerfile
+│   ├── package.json
+│   └── .env
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── App.js
+│   │   └── index.js
+│   ├── Dockerfile
+│   ├── package.json
+│   └── .env
+├── docker-compose.yml
+└── README.md
+
+## Requisitos
+
+Para ejecutar este proyecto, necesitarás tener instalados los siguientes programas:
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+### Backend - Requerimientos
+
+- **Autenticación JWT**: El backend maneja la autenticación de usuarios con JSON Web Tokens.
+- **Operaciones CRUD**: Proporciona funcionalidades para gestionar empleados y solicitudes, con roles diferenciados para empleados y administradores.
+- **Base de Datos**: PostgreSQL se utiliza como sistema de base de datos, y se gestiona mediante un ORM (Sequelize).
+
+## Estructura de Directorios
+
+- `backend/`: Contiene el código del servidor, configuraciones y Dockerfile.
+- `frontend/`: Contiene el código del frontend, configuraciones y Dockerfile.
+- `docker-compose.yml`: Configuración de Docker Compose para levantar todos los servicios.
+
+## Configuración
+
+### Backend
+
+1. Navega al directorio `backend/` y crea el archivo `.env`:
+
+    ```bash
+    cd backend
+    touch .env
+    ```
+
+2. Agrega las siguientes variables al archivo `.env`:
+
+    ```env
+    DATABASE_URL=postgres://user:password@db:5432/mydb
+    JWT_SECRET=mysecretkey
+    ```
+
+### Frontend
+
+1. Navega al directorio `frontend/` y crea el archivo `.env`:
+
+    ```bash
+    cd ../frontend
+    touch .env
+    ```
+
+2. Agrega la siguiente variable al archivo `.env`:
+
+    ```env
+    REACT_APP_API_URL=http://localhost:5000
+    ```
+
+### Configuración del Docker Compose
+
+1. En la raíz del proyecto, asegúrate de que el archivo `docker-compose.yml` esté configurado correctamente.
+
+2. Levanta los servicios:
+
+    ```bash
+    docker-compose up --build
+    ```
+
+3. Corre las migraciones de Prisma:
+
+    ```bash
+    docker-compose exec backend npx prisma migrate dev --name init
+    ```
+
+## Pruebas
+
+Para probar el backend, navega a `http://localhost:5000`. Para el frontend,
