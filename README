@@ -1,4 +1,5 @@
-# Full Stack Application: CRUD con Autenticación, JWT y PostgreSQL
+# Gerardo Ramos Prueba Full Stack Application: CRUD con Autenticación, JWT y PostgreSQL
+
 
 Este proyecto es una aplicación Full Stack que incluye un backend en Node.js con autenticación JWT y operaciones CRUD, y un frontend en React. Ambos servicios están dockerizados y configurados para ser levantados con Docker Compose.
 
