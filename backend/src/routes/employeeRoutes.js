@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getEmployees, createEmployee } = require('../controllers/employeeController');
+const { getAllEmployees, createEmployee } = require('../controllers/employeeController');
 
 /**
  * @swagger
@@ -33,14 +33,20 @@ const { getEmployees, createEmployee } = require('../controllers/employeeControl
  *                     type: string
  *                     description: The employee's name
  *                     example: John Doe
- *                   position:
+ *                   createdAt:
  *                     type: string
- *                     description: The employee's position
- *                     example: Developer
+ *                     format: date-time
+ *                     description: The employee's creation date
+ *                     example: 2024-09-09T00:00:00Z
+ *                   salary:
+ *                     type: number
+ *                     format: float
+ *                     description: The employee's salary
+ *                     example: 50000.00
  *       500:
  *         description: Internal server error
  */
-router.get('/', getEmployees);
+router.get('/', getAllEmployees);
 
 /**
  * @swagger
@@ -58,9 +64,10 @@ router.get('/', getEmployees);
  *               name:
  *                 type: string
  *                 example: Jane Doe
- *               position:
- *                 type: string
- *                 example: Manager
+ *               salary:
+ *                 type: number
+ *                 format: float
+ *                 example: 60000.00
  *     responses:
  *       201:
  *         description: Employee created successfully
@@ -76,9 +83,14 @@ router.get('/', getEmployees);
  *                 name:
  *                   type: string
  *                   example: Jane Doe
- *                 position:
+ *                 createdAt:
  *                   type: string
- *                   example: Manager
+ *                   format: date-time
+ *                   example: 2024-09-09T00:00:00Z
+ *                 salary:
+ *                   type: number
+ *                   format: float
+ *                   example: 60000.00
  *       400:
  *         description: Bad request
  *       500:

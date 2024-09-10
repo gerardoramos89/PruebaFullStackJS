@@ -1,13 +1,23 @@
+/* Estilos generales */
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  /* Tema claro */
+  .light-theme {
+    --background-color: #ffffff;
+    --text-color: #000000;
+  }
+  
+  /* Tema oscuro */
+  .dark-theme {
+    --background-color: #000000;
+    --text-color: #ffffff;
+  }
+  
+  /* Aplicar variables CSS */
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  

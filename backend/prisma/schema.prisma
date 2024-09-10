@@ -26,9 +26,8 @@ model Request {
 }
 
 model Employee {
-  id      Int     @id @default(autoincrement())
-  name    String
-  createdAt   DateTime @default(now())
-  position String
-  salary  Float
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  salary    Float
 }

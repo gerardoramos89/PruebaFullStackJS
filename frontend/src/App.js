@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
 
-function App() {
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import EmployeesPage from './pages/EmployeesPage';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import RegisterPage from './pages/RegisterPage';
+import NotFoundPage from './pages/NotFoundPage';
+
+import { Button, AppBar, Toolbar, Typography } from '@mui/material';
+import { useTheme } from './contexts/ThemeContext';
+import { useAuth } from './contexts/AuthContext';
+
+const App = () => {
+  const { authState } = useAuth();
+  const { toggleTheme } = useTheme();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: '2rem' }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            Gerardo Ramos Vargas: Prueba Tecnica Full Stack
+          </Typography>
+          <Button color="inherit" onClick={toggleTheme}>Toggle Theme</Button>
+        </Toolbar>
+      </AppBar>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/employees" element={authState.isAuthenticated ? <EmployeesPage /> : <LoginPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;

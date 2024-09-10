@@ -1,93 +1,58 @@
-// src/controllers/employeeController.js
-const prisma = require('../db/prismaClient');
+const prisma = require('../db/prismaClient'); // Asegúrate de que el cliente Prisma esté correctamente importado
 
-const createEmployee = async (req, res) => {
-  try {
-    const { name, position } = req.body;
-    const employee = await prisma.employee.create({
-      data: { name, position },
-    });
-    res.status(201).json(employee);
-  } catch (error) {
-    res.status(500).json({ error: 'Error creating employee' });
-  }
-};
-
-const getAllEmployees = async (req, res) => {
-  try {
-    const employees = await prisma.employee.findMany();
-    res.status(200).json(employees);
-  } catch (error) {
-    res.status(500).json({ error: 'Error retrieving employees' });
-  }
-};
 /**
- * @openapi
- * /employees/{id}:
+ * @swagger
+ * /employees:
  *   get:
- *     summary: Get employee by ID
- *     description: Retrieves a single employee by their ID.
- *     tags:
- *       - Employees
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         description: The ID of the employee to retrieve
- *         schema:
- *           type: integer
- *           example: 1
+ *     summary: Retrieve all employees
+ *     tags: [Employees]
  *     responses:
  *       200:
- *         description: Employee details
+ *         description: A list of employees
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: John Doe
- *                 position:
- *                   type: string
- *                   example: Software Engineer
- *       404:
- *         description: Employee not found
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: The employee ID
+ *                     example: 1
+ *                   name:
+ *                     type: string
+ *                     description: The employee's name
+ *                     example: John Doe
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The employee's creation date
+ *                     example: 2024-09-09T00:00:00Z
+ *                   salary:
+ *                     type: number
+ *                     format: float
+ *                     description: The employee's salary
+ *                     example: 50000.00
  *       500:
  *         description: Internal server error
  */
-const getEmployeeById = async (req, res) => {
+const getAllEmployees = async (req, res) => {
   try {
-    const { id } = req.params;
-    const employee = await prisma.employee.findUnique({ where: { id: Number(id) } });
-    if (employee) {
-      res.status(200).json(employee);
-    } else {
-      res.status(404).json({ error: 'Employee not found' });
-    }
+    const employees = await prisma.employee.findMany();
+    res.json(employees);
   } catch (error) {
-    res.status(500).json({ error: 'Error retrieving employee' });
+    console.error('Error fetching employees:', error);
+    res.status(500).json({ error: 'Error fetching employees' });
   }
 };
+
 /**
- * @openapi
- * /employees/{id}:
- *   put:
- *     summary: Update employee details
- *     description: Updates the details of an existing employee.
- *     tags:
- *       - Employees
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         description: The ID of the employee to update
- *         schema:
- *           type: integer
- *           example: 1
+ * @swagger
+ * /employees:
+ *   post:
+ *     summary: Create a new employee
+ *     tags: [Employees]
  *     requestBody:
  *       required: true
  *       content:
@@ -97,13 +62,14 @@ const getEmployeeById = async (req, res) => {
  *             properties:
  *               name:
  *                 type: string
- *                 example: John Doe
- *               position:
- *                 type: string
- *                 example: Senior Software Engineer
+ *                 example: Jane Doe
+ *               salary:
+ *                 type: number
+ *                 format: float
+ *                 example: 60000.00
  *     responses:
- *       200:
- *         description: Employee updated successfully
+ *       201:
+ *         description: Employee created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -111,69 +77,39 @@ const getEmployeeById = async (req, res) => {
  *               properties:
  *                 id:
  *                   type: integer
- *                   example: 1
+ *                   description: The employee ID
+ *                   example: 2
  *                 name:
  *                   type: string
- *                   example: John Doe
- *                 position:
+ *                   example: Jane Doe
+ *                 createdAt:
  *                   type: string
- *                   example: Senior Software Engineer
- *       404:
- *         description: Employee not found
+ *                   format: date-time
+ *                   example: 2024-09-09T00:00:00Z
+ *                 salary:
+ *                   type: number
+ *                   format: float
+ *                   example: 60000.00
+ *       400:
+ *         description: Bad request
  *       500:
  *         description: Internal server error
  */
-const updateEmployee = async (req, res) => {
+const createEmployee = async (req, res) => {
+  const { name, salary } = req.body;
+
   try {
-    const { id } = req.params;
-    const { name, position } = req.body;
-    const employee = await prisma.employee.update({
-      where: { id: Number(id) },
-      data: { name, position },
+    const employee = await prisma.employee.create({
+      data: {
+        name,
+        salary: parseFloat(salary),
+      },
     });
-    res.status(200).json(employee);
+    res.status(201).json(employee);
   } catch (error) {
-    res.status(500).json({ error: 'Error updating employee' });
-  }
-};
-/**
- * @openapi
- * /employees/{id}:
- *   delete:
- *     summary: Delete an employee
- *     description: Deletes an employee by their ID.
- *     tags:
- *       - Employees
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         description: The ID of the employee to delete
- *         schema:
- *           type: integer
- *           example: 1
- *     responses:
- *       204:
- *         description: Employee deleted successfully
- *       404:
- *         description: Employee not found
- *       500:
- *         description: Internal server error
- */
-const deleteEmployee = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await prisma.employee.delete({ where: { id: Number(id) } });
-    res.status(204).end();
-  } catch (error) {
-    res.status(500).json({ error: 'Error deleting employee' });
+    console.error('Error creating employee:', error);
+    res.status(500).json({ error: 'Error creating employee' });
   }
 };
 
-module.exports = {
-  createEmployee,
-  getAllEmployees,
-  getEmployeeById,
-  updateEmployee,
-  deleteEmployee,
-};
+module.exports = { getAllEmployees, createEmployee };
